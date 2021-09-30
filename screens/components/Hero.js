@@ -19,25 +19,21 @@ export default Hero
 
 const styles = StyleSheet.create({
     conntainerHome: {
-
         justifyContent: 'center',
         alignItems: 'center',
     },
-
     background: {
         width: '100%',
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
     },
-
     text: {
         fontSize: 24,
         paddingHorizontal: 24,
         marginBottom: 60,
         textAlign: 'center',
     },
-
     button: {
         backgroundColor: '#956bff',
         paddingHorizontal: 30,
@@ -45,7 +41,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginTop: 40,
     },
-
     buttonText: {
         fontSize: 24,
     }

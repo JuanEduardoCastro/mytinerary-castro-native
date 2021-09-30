@@ -6,7 +6,7 @@ import itinerariesReducer from './itinerariesReducer'
 const rootReducer = combineReducers({
     cities: citiesReducer,
     user: usersReducer,
-    itineraries: itinerariesReducer,
+/*     itineraries: itinerariesReducer, */
 })
 
 export default rootReducer

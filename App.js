@@ -6,6 +6,8 @@ import { applyMiddleware, createStore } from 'redux'
 import { Provider } from 'react-redux'
 import rootReducer from './redux/reducers/rootReducer'
 import thunk from 'redux-thunk'
+import UserSignUp from './screens/UserSignUp'
+import UserLogIn from './screens/UserLogIn'
 
 const myStore = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -14,7 +16,9 @@ const App = () => {
   return (
     <Provider store={myStore} >
       {/* <Home /> */}
-      <Cities />
+      {/* <Cities /> */}
+      {/* <UserSignUp /> */}
+      <UserLogIn /> 
     </Provider>
   )
 }
