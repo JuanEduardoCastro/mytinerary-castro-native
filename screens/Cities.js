@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View , ImageBackground, TextInput, FlatList} from 'react-native'
+import { StyleSheet, Text, View , ImageBackground, TextInput, FlatList, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import citiesActions from '../redux/actions/citiesActions'
 import CitiesCard from './components/CitiesCard';
@@ -26,12 +26,6 @@ const Cities = (props) => {
         console.log(e.target)
     }    
 
-//    citiesList.map(city => {
-//        console.log(city._id)
-//    })
-    
-    // console.log('aca se imprime la lista', citiesList[0])
-
     return (
         <View style={styles.container}>
             <View style={styles.containerHero}>
@@ -49,7 +43,9 @@ const Cities = (props) => {
                     keyExtractor={( city ) => city._id}
                     renderItem={( city ) => {
                         return (
-                            <CitiesCard city={city} />
+                            <TouchableOpacity style={styles.cardLink} onPress={() => props.navigation.navigate('city', { id: city.item._id })}>
+                                <CitiesCard city={city} />
+                            </TouchableOpacity>
                         )
                     }}
                 />
@@ -102,5 +98,8 @@ const styles = StyleSheet.create({
         width: '95%',
         height: '100%',
         paddingVertical: 12,
-    }
+    },
+    cardLink: {
+
+    },
 })

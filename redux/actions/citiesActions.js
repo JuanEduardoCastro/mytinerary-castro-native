@@ -18,11 +18,11 @@ const citiesActions = {
     //     }
     // },
 
-    // getUniqueCity: (id) => {
-    //     return (dispatch) => {
-    //         dispatch({ type: 'GET_UNIQUE_CITY', payload: id })
-    //     }
-    // },
+    getUniqueCity: (id) => {
+        return (dispatch) => {
+            dispatch({ type: 'GET_UNIQUE_CITY', payload: id })
+        }
+    },
 }
 
 export default citiesActions

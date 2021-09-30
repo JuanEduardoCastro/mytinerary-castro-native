@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native'
+import { connect } from 'react-redux'
+import citiesActions from '../redux/actions/citiesActions'
 
-const City = () => {
+const City = (props) => {
 
     const city = {
         "_id": "611aab05ca329a1257bdee44",
@@ -21,17 +23,29 @@ const City = () => {
       ],
       "textColorTag": true,
     }
-    
-
+    console.log(props)
+    useEffect(() => {
+        async function getUniqueCity() {
+            try {
+                await props.getUniqueCity(props.route.params.id)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getUniqueCity()
+    }, [])
 
 
     return (
         <View style={styles.container}>
             <View style={styles.containerImg}>
-                <ImageBackground source={{ uri: city.imgSource }} style={styles.cityImg} resizeMode='cover'>
-                    <Text style={styles.cityText}>{city.cityName}</Text>
+                <ImageBackground source={{ uri: props.city.imgSource }} style={styles.cityImg} resizeMode='cover'>
+                    <Text style={styles.cityText}>{props.city.cityName}</Text>
                 </ImageBackground>
                 <View style={styles.cityInfoLine}>
+                    <ImageBackground source={{ uri: props.city.flag }} style={styles.cityFlag} resizeMode='cover' >
+                    </ImageBackground>
+                    
                     
                 </View>
                 <View style={styles.itinerariesList}>
@@ -47,7 +61,17 @@ const City = () => {
     )
 }
 
-export default City
+const mapStateToProps = (state) => {
+    return {
+        city: state.cities.cityStore
+    }
+}
+
+const mapDispatchToProps = {
+    getUniqueCity: citiesActions.getUniqueCity
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(City)
 
 const styles = StyleSheet.create({
     container: {
@@ -73,6 +97,11 @@ const styles = StyleSheet.create({
     cityInfoLine: {
         width: '100%',
         height: '35%',
-        backgroundColor: '#ddd'
+        backgroundColor: '#ddd',
+        justifyContent: 'center'
+    },
+    cityFlag: {
+        width: '45%',
+        height: '80%',
     }
 })

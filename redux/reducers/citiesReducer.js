@@ -13,16 +13,16 @@ const citiesReducer = (state = {citiesListStore: [], citiesFilteredStore: [], ci
         //         citiesFilteredStore: citiesFiltered,
         //     }
         
-        // case 'GET_UNIQUE_CITY':
-        //     let uniqCity = state.citiesListStore.find(city => (city._id === action.payload))
-        //     return {
-        //         ...state,
-        //         cityStore: uniqCity,
-        //     }
-
+        case 'GET_UNIQUE_CITY':
+            let uniqueCity = state.citiesListStore.find(city => (city._id === action.payload))
+            console.log("en el reducer", uniqueCity)
+            return {
+                ...state,
+                cityStore: uniqueCity,
+            }
         default:
             return state
-    }
+        }
 }
 
 export default citiesReducer
