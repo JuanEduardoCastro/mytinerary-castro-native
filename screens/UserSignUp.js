@@ -52,7 +52,7 @@ const UserSignUp = () => {
                     </View>
                     <View style={styles.viewForLogIn}>
                         <Text style={styles.textForLogIn}>please click here to</Text>
-                        <TouchableOpacity style={styles.login} onPress={() => Alert.alerta("me lleva a login")}>
+                        <TouchableOpacity style={styles.login} onPress={() => Alert.alert("me lleva a login")}>
                             <Text style={styles.loginText}>Log In!</Text>
                         </TouchableOpacity>
                     </View>

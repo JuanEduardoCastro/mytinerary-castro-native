@@ -66,7 +66,7 @@ export default Carousel
 
 const styles = StyleSheet.create({
     container: {
-
+        flex: 1,
         paddingTop: 30,
         justifyContent: 'center',
         alignItems: 'center',

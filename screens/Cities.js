@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View , ImageBackground, TextInput, FlatList} from 'react-native'
 import { connect } from 'react-redux'
 import citiesActions from '../redux/actions/citiesActions'
+import CitiesCard from './components/CitiesCard';
 
 const Cities = (props) => {
 
@@ -12,31 +13,47 @@ const Cities = (props) => {
         async function getCitiesList() {
             try {
                 await props.getCitiesList()
+
             } catch (error) {
                 console.log(error)
             }
         }
         getCitiesList()
+        
     }, [])
     
     const inputFilterHandler = (e) => {
         console.log(e.target)
     }    
 
+//    citiesList.map(city => {
+//        console.log(city._id)
+//    })
+    
+    // console.log('aca se imprime la lista', citiesList[0])
+
     return (
         <View style={styles.container}>
-            <ImageBackground source={require('../assets/turismo04.jpeg')} style={styles.imgHero} resizeMode='cover'>
-                <TextInput 
-                style={styles.textInput}
-                onChangeText={inputFilterHandler}
-                value={inputFilter}
-                placeholder="Find a city to explore" />
-            </ImageBackground>
-            {/* <View style={styles.citiesList}>
+            <View style={styles.containerHero}>
+                <ImageBackground source={require('../assets/turismo04.jpeg')} style={styles.imgHero} resizeMode='cover'>
+                    <TextInput 
+                    style={styles.textInput}
+                    onChangeText={inputFilterHandler}
+                    value={inputFilter}
+                    placeholder="Find a city to explore" />
+                </ImageBackground>
+            </View>
+            <View style={styles.citiesList}>
                 <FlatList
                     data={props.citiesList}
+                    keyExtractor={( city ) => city._id}
+                    renderItem={( city ) => {
+                        return (
+                            <CitiesCard city={city} />
+                        )
+                    }}
                 />
-            </View> */}
+            </View>
         </View>
     )
 }
@@ -56,19 +73,34 @@ export default connect(mapStateToProps, mapDispatchToProps)(Cities)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        alignItems: 'center'
+    },
+    containerHero: {
+        width: '100%',
+        height: '40%',
+        
     },
     imgHero: {
         width: '100%',
-        height: '60%',
+        height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
     },
     textInput: {
-        width: '80%',
-        height: '5%',
+        width: '75%',
+        height: '8%',
         backgroundColor: 'white',
         borderColor: 'lightgray',
         borderRadius: 5,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        marginTop: 180
     },
+
+    // cities
+    citiesList: {
+        flex: 1,
+        width: '95%',
+        height: '100%',
+        paddingVertical: 12,
+    }
 })

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Alert, Button, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import Carousel from './Carousel'
 
 const Hero = () => {
     return (
@@ -18,7 +17,8 @@ const Hero = () => {
 export default Hero
 
 const styles = StyleSheet.create({
-    conntainerHome: {
+    conntainerHero: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
