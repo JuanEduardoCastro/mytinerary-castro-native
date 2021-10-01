@@ -1,11 +1,11 @@
-const usersReducer = (state = { userNameStore: null, userPhotoStore: null, userEmailStore: null }, action) => {
+const usersReducer = (state = { userNameStore: null, userPhotoStore: null, userEmailStore: null, countriesListStore: [] }, action) => {
 
     switch (action.type) {
         case 'LOG_IN_USER':
             return {
-                userNameStore: null,
-                userPhotoStore: null,
-                userEmailStore: null,
+                userNameStore: action.payload.userName,
+                userPhotoStore: action.payload.userPhoto,
+                userEmailStore: action.payload.userEmail,
             }
         
         case 'LOG_OUT_USER':
@@ -16,8 +16,10 @@ const usersReducer = (state = { userNameStore: null, userPhotoStore: null, userE
             }
         
         case 'GET_COUNTRIES_LIST':
+            let countriesList = action.payload.map(country => country.name.common)
+            countriesList = countriesList.sort()
             return {
-                countriesList: action.payload
+                countriesListStore: countriesList
             }
         
         default:

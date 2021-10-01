@@ -39,6 +39,7 @@ const usersActions = {
                 throw new Error("Error with database")
             }
             dispatch({ type: 'GET_COUNTRIES_LIST', payload: response.data })
+            
         }
     },
 

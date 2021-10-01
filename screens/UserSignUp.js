@@ -1,68 +1,102 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import RNPickerSlect from 'react-native-picker-select'
+import { connect } from 'react-redux'
+import usersActions from '../redux/actions/usersActions'
 
-const UserSignUp = () => {
+const UserSignUp = (props) => {
 
     const [inputFilter, setInputFilter] = useState('')
-    const [userData, setUserData] = useState({ userEmail: '', userPassword: '', userName: '', userLastName: '', userPhoto: '' })    
+    const [userData, setUserData] = useState({ })    
+
+    useEffect(() => {
+        async function getCountries() {
+            try {
+                await props.getCountriesList()                
+            } catch (error) {
+                console.log(error)    
+            }
+        }
+        getCountries() 
+    }, [])
+
+    const sendUserData = async () => {
+        if (Object.entries(userData).length > 0) {
+            let response = await props.addNewUser(userData)
+            if (!response.data.success) {
+                console.log(response.data.error)
+            }
+        } else {
+            console.log("All fields are required")
+        }
+    }
+
+    console.log(props.userLoggedIn)
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.form}>
-                    <Text style={styles.title}>Sign Up here</Text>
-                    <TextInput 
-                        style={styles.emailInput}
-                        onChange={(e) => setUserData({ ...userData, userEmail: e.nativeEvent.text})}
-                        placeholder="* Enter your email" />
-                    <TextInput 
-                        style={styles.emailInput}
-                        onChange={(e) => setUserData({ ...userData, userPassword: e.nativeEvent.text})}
-                        placeholder="* Enter your password" />
-                    <TextInput 
-                        style={styles.emailInput}
-                        onChange={(e) => setUserData({ ...userData, userName: e.nativeEvent.text})}
-                        placeholder="* Enter your first name" />
-                    <TextInput 
-                        style={styles.emailInput}
-                        onChange={(e) => setUserData({ ...userData, userLastName: e.nativeEvent.text})}
-                        placeholder="* Enter your last name" />
-                    <TextInput 
-                        style={styles.emailInput}
-                        onChange={(e) => setUserData({ ...userData, userPhoto: e.nativeEvent.text})}
-                        placeholder="* Enter your photo url" />
-                    <View style={styles.selectView}>
-                        <RNPickerSlect
-                        style={{ ...pickerSelectStyles }}
-                        placeholder={{ label: '* Select a country', value: '' }}
-                        onValueChange={(value) => console.log(value)}
-                        items={[ 
-                            { label: 'pais1', value: 'pais1' },
-                            { label: 'pais2', value: 'pais2' },
-                            { label: 'pais3', value: 'pais3' },
-                        ]} />
-                    </View>
-                    <TouchableOpacity style={styles.button} onPress={() => Alert.alert("manda los datos del usuario")}>
-                        <Text style={styles.buttonText}>Send</Text>
-                    </TouchableOpacity>
-                    <View style={styles.loginLine}>
-                        <Text style={styles.textForLogIn}>If you already have an account,</Text>
-                    </View>
-                    <View style={styles.viewForLogIn}>
-                        <Text style={styles.textForLogIn}>please click here to</Text>
-                        <TouchableOpacity style={styles.login} onPress={() => Alert.alert("me lleva a login")}>
-                            <Text style={styles.loginText}>Log In!</Text>
+        <View style={styles.container}>
+            <ScrollView>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={styles.form}>
+                        <Text style={styles.title}>Sign Up here</Text>
+                        <TextInput 
+                            style={styles.emailInput}
+                            onChange={(e) => setUserData({ ...userData, userEmail: e.nativeEvent.text})}
+                            placeholder="* Enter your email" />
+                        <TextInput 
+                            style={styles.emailInput}
+                            onChange={(e) => setUserData({ ...userData, userPassword: e.nativeEvent.text})}
+                            placeholder="* Enter your password" />
+                        <TextInput 
+                            style={styles.emailInput}
+                            onChange={(e) => setUserData({ ...userData, userName: e.nativeEvent.text})}
+                            placeholder="* Enter your first name" />
+                        <TextInput 
+                            style={styles.emailInput}
+                            onChange={(e) => setUserData({ ...userData, userLastName: e.nativeEvent.text})}
+                            placeholder="* Enter your last name" />
+                        <TextInput 
+                            style={styles.emailInput}
+                            onChange={(e) => setUserData({ ...userData, userPhoto: e.nativeEvent.text})}
+                            placeholder="* Enter your photo url" />
+                        <View style={styles.selectView}>
+                            <RNPickerSlect
+                            style={{ ...pickerSelectStyles }}
+                            placeholder={{ label: '* Select a country', value: '' }}
+                            onValueChange={(value) => setUserData({ ...userData, userCountry: value })}
+                            items={ props.countriesList.map((item) => ({ label: item, value: item })) } />
+                        </View>
+                        <TouchableOpacity style={styles.button} onPress={sendUserData}>
+                            <Text style={styles.buttonText}>Send</Text>
                         </TouchableOpacity>
+                        <View style={styles.loginLine}>
+                            <Text style={styles.textForLogIn}>If you already have an account,</Text>
+                        </View>
+                        <View style={styles.viewForLogIn}>
+                            <Text style={styles.textForLogIn}>please click here to</Text>
+                            <TouchableOpacity style={styles.login} onPress={() => props.navigation.navigate('login')}>
+                                <Text style={styles.loginText}>Log In!</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-            </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+                </TouchableWithoutFeedback>
+            </ScrollView>
+        </View>
     )
 }
 
-export default UserSignUp 
+const mapStateToProps = (state) => {
+    return {
+        countriesList: state.users.countriesListStore,
+        userLoggedIn: state.users.userEmail
+    }
+}
+
+const mapDispatchToProps = {
+    getCountriesList: usersActions.getCountriesList,
+    addNewUser: usersActions.addNewUser,
+}
+export default connect(mapStateToProps, mapDispatchToProps)(UserSignUp)
 
 const styles = StyleSheet.create({
     container: {
@@ -87,7 +121,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     emailInput: {
-        width: '80%',
+        width: '100%',
         height: 35,
         backgroundColor: 'white',
         borderStyle: 'solid',
@@ -99,7 +133,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     selectView: {
-        width: '80%',
+        width: '100%',
         height: 35,
         backgroundColor: 'white',
         fontSize: 14,
@@ -129,11 +163,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     loginLine: {
-        width: '80%',
+        width: '100%',
         marginTop: 20,
     },
     viewForLogIn: {
-        width: '80%',
+        width: '100%',
         marginTop: 4,
         flexDirection: 'row',
         alignItems: 'center',
