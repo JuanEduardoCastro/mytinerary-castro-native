@@ -15,7 +15,6 @@ const citiesReducer = (state = {citiesListStore: [], citiesFilteredStore: [], ci
         
         case 'GET_UNIQUE_CITY':
             let uniqueCity = state.citiesListStore.find(city => (city._id === action.payload))
-            console.log("en el reducer", uniqueCity)
             return {
                 ...state,
                 cityStore: uniqueCity,

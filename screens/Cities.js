@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View , ImageBackground, TextInput, FlatList, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import citiesActions from '../redux/actions/citiesActions'
-import CitiesCard from './components/CitiesCard';
+import CitiesCard from './components/CitiesCard'
 
 const Cities = (props) => {
 

@@ -1,33 +1,18 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, FlatList, Image } from 'react-native'
 import { connect } from 'react-redux'
 import citiesActions from '../redux/actions/citiesActions'
+import itinerariesActions from '../redux/actions/itinerariesActions'
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
+import Itinerary from './components/Itinerary'
 
 const City = (props) => {
 
-    const city = {
-        "_id": "611aab05ca329a1257bdee44",
-      "cityName": "Hong Kong",
-      "codeISO": "HKD",
-      "continent": "Asia",
-      "coordinates": 0,
-      "countryName": "China",
-      "currency": "Hong Kong dollar",
-      "currencySymbol": "$",
-      "description": "Hong Kong has an energy about it that is hard to describe. Around every corner is something new and unique, whether it's an ancient temple, a shop selling the latest electronic gadget, or a man taking his bird in a cage for a walk.",
-      "flag": "https://i.imgur.com/a3jvS8M.png",
-      "imgSource": "https://i.imgur.com/ZcZxms2.jpg",
-      "language": [
-        "Chinese",
-        "English",
-      ],
-      "textColorTag": true,
-    }
-    console.log(props)
     useEffect(() => {
         async function getUniqueCity() {
             try {
                 await props.getUniqueCity(props.route.params.id)
+                await props.getItinerariesOfACity(props.route.params.id)
             } catch (error) {
                 console.log(error)
             }
@@ -43,19 +28,34 @@ const City = (props) => {
                     <Text style={styles.cityText}>{props.city.cityName}</Text>
                 </ImageBackground>
                 <View style={styles.cityInfoLine}>
-                    <ImageBackground source={{ uri: props.city.flag }} style={styles.cityFlag} resizeMode='cover' >
-                    </ImageBackground>
-                    
-                    
+                    <Image source={{ uri: props.city.flag }} style={styles.cityFlag} resizeMode='cover' />
+                    <View style={styles.coinIcon}>
+                        <FontAwesome5 name='coins' size={20} color='black' />
+                        <Text style={styles.coinText} >{props.city.codeISO}</Text>
+                    </View>
+                    <View style={styles.languageIcon}>
+                        <MaterialIcons name='translate' size={20} color='black' />
+                        <Text style={styles.languageText}>{props.city.language}</Text>
+                    </View>
+                </View>
+            </View>    
+            <View style={styles.containerItinerary}>
+                <View style={styles.itinerariesTitle}>
+                    <Text style={styles.titleText}>Mytineraries</Text>
                 </View>
                 <View style={styles.itinerariesList}>
-                    {/* <FlatList 
-                        data={city.}
-                        keyExtractor={}
-                        renderItem={}
-                    /> */}
+                    <FlatList 
+                        data={props.itinerariesList}
+                        keyExtractor={( itinerary ) => itinerary._id}
+                        renderItem={( itinerary ) => {
+                            return (
+                                <View style={styles.itineraryCard} >
+                                    <Itinerary itinerary={itinerary} navigation={props.navigation} />
+                                </View>
+                            )
+                        }}
+                    />
                 </View>
-
             </View>
         </View>
     )
@@ -63,12 +63,14 @@ const City = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        city: state.cities.cityStore
+        city: state.cities.cityStore,
+        itinerariesList: state.itineraries.itinerariesOfACityStore,
     }
 }
 
 const mapDispatchToProps = {
-    getUniqueCity: citiesActions.getUniqueCity
+    getUniqueCity: citiesActions.getUniqueCity,
+    getItinerariesOfACity: itinerariesActions.getItinerariesOfACity
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(City)
@@ -78,8 +80,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     containerImg: {
-        width: '100%',
-        height: '30%',
+       height: '25%'
     },
     cityImg: {
         width: '100%',
@@ -98,10 +99,60 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '35%',
         backgroundColor: '#ddd',
-        justifyContent: 'center'
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center'
     },
     cityFlag: {
-        width: '45%',
+        width: '25%',
         height: '80%',
-    }
+    },
+    coinIcon: {
+        width: '25%',
+        height: '80%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }, 
+    coinText: {
+        fontSize: 16,
+        marginLeft: '6%'
+    },
+    languageIcon: {
+        width: '28%',
+        height: '80%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    languageText: {
+        width: '60%',
+        fontSize: 16,
+        marginLeft: '6%',
+    },
+
+
+    containerItinerary: {
+        flex: 1,
+        paddingTop: 64,
+        alignItems: 'center'
+    },
+    itinerariesTitle: {
+        width: '100%',
+        height: '8%',
+        justifyContent: 'center',
+        marginTop: 15,
+    },
+    titleText: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    itinerariesList: {
+        flex: 1,
+        width: '95%',
+        height: '100%',
+        paddingVertical: 12,
+    },
+    
 })

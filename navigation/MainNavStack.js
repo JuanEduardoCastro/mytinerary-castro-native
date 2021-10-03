@@ -3,8 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Cities from '../screens/Cities'
 import City from '../screens/City'
 import Home from '../screens/Home'
-import UserLogIn from '../screens/UserLogIn'
-import UserSignUp from '../screens/UserSignUp'
+import Activities from '../screens/Activities'
 
 const Stack = createNativeStackNavigator()
 
@@ -16,9 +15,7 @@ const Nav = () => {
             }}/>
             <Stack.Screen name='cities' component={Cities} />
             <Stack.Screen name='city' component={City} />
-            <Stack.Screen name='signup' component={UserSignUp} />
-            <Stack.Screen name='login' component={UserLogIn} />
-            
+            <Stack.Screen name='activities' component={Activities} />            
         </Stack.Navigator>
     )
 }

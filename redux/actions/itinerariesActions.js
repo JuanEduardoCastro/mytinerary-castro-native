@@ -13,16 +13,16 @@ const itinerariesActions = {
     //     }
     // },
 
-    // getItinerariesOfACity: (cityId) => {
-    //     return async (dispatch) => {
-    //         let response = await axios.get(`https://mytinerary-castro.herokuapp.com/api/itineraries/${cityId}`)
-    //         if (!response.data.success) {
-    //             throw new Error("Error with database")
-    //         }
-    //         let data = response.data.response
-    //         dispatch({ type: 'GET_ITINERARIES_FROM_A_CITY', payload: data })
-    //     }
-    // },
+    getItinerariesOfACity: (cityId) => {
+        return async (dispatch) => {
+            let response = await axios.get(`https://mytinerary-castro.herokuapp.com/api/itineraries/${cityId}`)
+            if (!response.data.success) {
+                throw new Error("Error with database")
+            }
+            let data = response.data.response
+            dispatch({ type: 'GET_ITINERARIES_FROM_A_CITY', payload: data })
+        }
+    },
 
     // getItinerariesForUserLike: (token, id) => {
     //     return async (dispatch) => {
@@ -57,16 +57,16 @@ const itinerariesActions = {
     //     }
     // },
 
-    // getComments: (id) => {
-    //     return async (dispatch) => {
-    //         let response = await axios.get(`https://mytinerary-castro.herokuapp.com/api/itinerary/comments/${id}`)
-    //         if (!response.data.success) {
-    //             throw new Error("Error with database")
-    //         } else {
-    //             return response.data
-    //         }
-    //     }
-    // },
+    getComments: (id) => {
+        return async (dispatch) => {
+            let response = await axios.get(`https://mytinerary-castro.herokuapp.com/api/itinerary/comments/${id}`)
+            if (!response.data.success) {
+                throw new Error("Error with database")
+            } else {
+                return response.data
+            }
+        }
+    },
 
     // deleteComment: (id, comment,token) => {
     //     return async (dispatch) => {
