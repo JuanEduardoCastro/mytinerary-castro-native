@@ -12,8 +12,6 @@ const Activities = (props) => {
     const [activities, setActivities] = useState([])
     const [comments, setComments] = useState([])
 
-    // console.log(props)
-
     useEffect(() => {
         async function getActivitiesOfItinerary() {
             try {
@@ -40,50 +38,51 @@ const Activities = (props) => {
         getComments()
     }, [])
 
-    const inputFilterHandler = (e) => {
-        console.log(e)
+    const inputFilterHandler = (value) => {
+        console.log(value)
     }
 
     return (
+        
         <View style={styles.container}>
             <View style={styles.containerSize}>
                 <View style={styles.containerCarousel}>
-                    <Swiper>
+                    <Swiper >
                         {activities.map((activity, index) => {
                             return  <View style={styles.slide1} key={index}><ImageBackground source={{ uri: activity.activityPhoto }} style={styles.slideImg} resizeMode='cover'><Text style={styles.slideText}>{activity.activityTitle}</Text></ImageBackground></View>
                         })}
                     </Swiper>
                 </View>
-                <View style={styles.containerComments}>
-                    <View style={styles.commentsBox}>
-                        <FlatList 
-                            data={comments}
-                            keyExtractor={( comment ) => comment.commentId }
-                            renderItem={( comment ) => {
-                                return (
-                                <View style={styles.commentLine} >
-                                    <View style={styles.userPhoto}>
-                                        <Image source={{ uri: comment.item.userPhoto }} style={styles.userPhotoCircle} resizeMode='cover' />
+                <KeyboardAwareScrollView style={{ flex: 1 }}>
+                    <View style={styles.containerComments}>
+                        <View style={styles.commentsBox}>
+                            <FlatList 
+                                data={comments}
+                                keyExtractor={( comment ) => comment.commentId }
+                                renderItem={( comment ) => {
+                                    return (
+                                    <View style={styles.commentLine} >
+                                        <View style={styles.userPhoto}>
+                                            <Image source={{ uri: comment.item.userPhoto }} style={styles.userPhotoCircle} resizeMode='cover' />
+                                        </View>
+                                        <View style={styles.userNameComment} >
+                                            <Text style={styles.userName}>{comment.item.userName}</Text>
+                                            <Text style={styles.userComment}>{comment.item.userComment}</Text>
+                                        </View>
                                     </View>
-                                    <View style={styles.userNameComment} >
-                                        <Text style={styles.userName}>{comment.item.userName}</Text>
-                                        <Text style={styles.userComment}>{comment.item.userComment}</Text>
-                                    </View>
-                                </View>
-                                )
-                            }}
-                        />
-                    </View>
-                    <KeyboardAwareScrollView>
+                                    )
+                                }}
+                            />
+                        </View>
                         <View style={styles.commentBox}>
                             <TextInput 
                                 style={styles.textInput}
                                 onFocus={(event) => console.log(event)}
                                 onChangeText={inputFilterHandler}
                                 placeholder="Your comment here" />
-                        </View>
-                    </KeyboardAwareScrollView>
-                </View>
+                        </View>                        
+                    </View>
+                </KeyboardAwareScrollView>
             </View>
         </View>
     )
@@ -114,11 +113,10 @@ const styles = StyleSheet.create({
     containerCarousel: {
         backgroundColor: 'lightblue',
         width: '100%',
-        height: '40%',
+        height: '30%',
         paddingTop: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'lightblue',
     },
     title: {
         width: '100%',
@@ -145,18 +143,19 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: 'bold',
         textAlign: 'center',
+        paddingTop: 12
     },
 
 
     containerComments: {
         width: '100%',
+        height: '100%',
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingTop: 15,
+        paddingTop: 12,
     },
     commentsBox: {
         width: '95%',
-        height: '60%',
+        height: '70%',
         borderColor: 'black',
         borderWidth: 1,
         borderStyle: 'solid',
@@ -209,18 +208,18 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 5,
     },  
     commentBox: {
-        backgroundColor: 'lightblue',
-        width: '100%',
-        height: '50%',
+        width: '95%',
         backgroundColor: 'white',
-        borderColor: 'lightgray',
+        borderWidth: 1, 
+        borderColor: 'gray',
         borderRadius: 5,
         marginTop: 20,
     },
     textInput: {
         fontSize: 24,
-        paddingHorizontal: 25,
-        paddingVertical: 12,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+
     }
 
 

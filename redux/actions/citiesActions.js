@@ -12,11 +12,11 @@ const citiesActions = {
         }
     },
 
-    // getCitiesFiltered: (letter) => {
-    //     return (dispatch) => {
-    //         dispatch({ type: 'GET_CITIES_FILTERED', payload: letter })
-    //     }
-    // },
+    getCitiesFiltered: (letter) => {
+        return (dispatch) => {
+            dispatch({ type: 'GET_CITIES_FILTERED', payload: letter })
+        }
+    },
 
     getUniqueCity: (id) => {
         return (dispatch) => {

@@ -3,28 +3,40 @@ import { StyleSheet, Text, View , ImageBackground, TextInput, FlatList, Touchabl
 import { connect } from 'react-redux'
 import citiesActions from '../redux/actions/citiesActions'
 import CitiesCard from './components/CitiesCard'
+import Loader from './Loader'
 
 const Cities = (props) => {
 
-    const [inputFilter, setInputFilter] = useState('')
-    const [citiesList, setCitiesList] = useState([])
+    const [inputValue, setInputValue] = useState('')
+    const [loader, setLoader] = useState(true)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         async function getCitiesList() {
             try {
                 await props.getCitiesList()
-
+                setLoader(false)
             } catch (error) {
                 console.log(error)
+                setLoader(false)
+                setError(error)
+                return false
             }
         }
         getCitiesList()
         
     }, [])
     
+    if (loader) {
+        return (<View><Loader /></View>)
+    }
+
     const inputFilterHandler = (e) => {
-        console.log(e.target)
+        props.getCitiesFiltered(e.nativeEvent.text)
+        setInputValue(e.nativeEvent.text)
     }    
+
+    const citiesForRender = inputValue === '' ? props.citiesList : props.citiesFiltered
 
     return (
         <View style={styles.container}>
@@ -32,18 +44,19 @@ const Cities = (props) => {
                 <ImageBackground source={require('../assets/turismo04.jpeg')} style={styles.imgHero} resizeMode='cover'>
                     <TextInput 
                     style={styles.textInput}
-                    onChangeText={inputFilterHandler}
-                    value={inputFilter}
+                    onChange={inputFilterHandler}
+                    value={inputValue}
                     placeholder="Find a city to explore" />
                 </ImageBackground>
             </View>
             <View style={styles.citiesList}>
                 <FlatList
-                    data={props.citiesList}
+                    data={citiesForRender}
                     keyExtractor={( city ) => city._id}
                     renderItem={( city ) => {
                         return (
-                            <TouchableOpacity style={styles.cardLink} onPress={() => props.navigation.navigate('city', { id: city.item._id })}>
+                            <TouchableOpacity style={styles.cardLink} 
+                            onPress={() => props.navigation.navigate('city', { id: city.item._id, cityName: city.item.cityName })}>
                                 <CitiesCard city={city} />
                             </TouchableOpacity>
                         )
@@ -57,11 +70,13 @@ const Cities = (props) => {
 const mapStateToProps = (state) => {
     return {
         citiesList: state.cities.citiesListStore,
+        citiesFiltered: state.cities.citiesFilteredStore
     }
 }
 
 const mapDispatchToProps = {
     getCitiesList: citiesActions.getCitiesList,
+    getCitiesFiltered: citiesActions.getCitiesFiltered
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cities)
@@ -73,7 +88,7 @@ const styles = StyleSheet.create({
     },
     containerHero: {
         width: '100%',
-        height: '40%',
+        height: '35%',
         
     },
     imgHero: {
@@ -84,12 +99,13 @@ const styles = StyleSheet.create({
     },
     textInput: {
         width: '75%',
-        height: '8%',
+        height: '12%',
         backgroundColor: 'white',
         borderColor: 'lightgray',
         borderRadius: 5,
         paddingHorizontal: 10,
-        marginTop: 180
+        marginTop: '30%',
+        fontSize: 18,
     },
 
     // cities

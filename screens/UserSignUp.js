@@ -6,13 +6,14 @@ import usersActions from '../redux/actions/usersActions'
 
 const UserSignUp = (props) => {
 
-    const [inputFilter, setInputFilter] = useState('')
-    const [userData, setUserData] = useState({ })    
+    const [userData, setUserData] = useState({ })
+    const [countriesList, setCountriesList] = useState([ ])    
 
     useEffect(() => {
         async function getCountries() {
             try {
-                await props.getCountriesList()                
+                let response = await props.getCountriesList()
+                setCountriesList(response.map((country) => country.name.common).sort())
             } catch (error) {
                 console.log(error)    
             }
@@ -23,7 +24,10 @@ const UserSignUp = (props) => {
     const sendUserData = async () => {
         if (Object.entries(userData).length > 0) {
             let response = await props.addNewUser(userData)
-            if (!response.data.success) {
+            if (response.data.success) {
+                // console.log("esta adentro", response )
+                props.navigation.navigate('home', { user: props})
+            } else {
                 console.log(response.data.error)
             }
         } else {
@@ -31,7 +35,10 @@ const UserSignUp = (props) => {
         }
     }
 
-    console.log(props.userLoggedIn)
+    // let countriesList = props.countryList.map(country => country.name.common)
+    // countriesList = countriesList.sort()
+
+    // console.log(props.token)
 
     return (
         <View style={styles.container}>
@@ -42,11 +49,13 @@ const UserSignUp = (props) => {
                         <TextInput 
                             style={styles.emailInput}
                             onChange={(e) => setUserData({ ...userData, userEmail: e.nativeEvent.text})}
-                            placeholder="* Enter your email" />
+                            placeholder="* Enter your email" 
+                            keyboardType='email-address' />
                         <TextInput 
                             style={styles.emailInput}
                             onChange={(e) => setUserData({ ...userData, userPassword: e.nativeEvent.text})}
-                            placeholder="* Enter your password" />
+                            placeholder="* Enter your password"
+                            secureTextEntry={true} />
                         <TextInput 
                             style={styles.emailInput}
                             onChange={(e) => setUserData({ ...userData, userName: e.nativeEvent.text})}
@@ -61,10 +70,10 @@ const UserSignUp = (props) => {
                             placeholder="* Enter your photo url" />
                         <View style={styles.selectView}>
                             <RNPickerSlect
-                            style={{ ...pickerSelectStyles }}
-                            placeholder={{ label: '* Select a country', value: '' }}
-                            onValueChange={(value) => setUserData({ ...userData, userCountry: value })}
-                            items={ props.countriesList.map((item) => ({ label: item, value: item })) } />
+                                style={{ ...pickerSelectStyles }}
+                                placeholder={{ label: '* Select a country', value: '' }}
+                                onValueChange={(value) => setUserData({ ...userData, userCountry: value })}
+                                items={ countriesList.map((item) => ({ label: item, value: item })) } />
                         </View>
                         <TouchableOpacity style={styles.button} onPress={sendUserData}>
                             <Text style={styles.buttonText}>Send</Text>
@@ -88,7 +97,7 @@ const UserSignUp = (props) => {
 const mapStateToProps = (state) => {
     return {
         countriesList: state.users.countriesListStore,
-        userLoggedIn: state.users.userEmail
+        token: state.users.token
     }
 }
 

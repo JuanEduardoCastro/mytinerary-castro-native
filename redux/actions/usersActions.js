@@ -6,7 +6,7 @@ const usersActions = {
         return async (dispatch) => {
             let response = await axios.post('https://mytinerary-castro.herokuapp.com/api/user/signup', { ...userData })
             if (response.data.success) {
-                dispatch({ type: 'LOG_IN_USER', payload: response.data.reponse })
+                dispatch({ type: 'LOG_IN_USER', payload: response.data.response })
             }
             return response
         }
@@ -38,7 +38,7 @@ const usersActions = {
             if (!response.status === '200') {
                 throw new Error("Error with database")
             }
-            dispatch({ type: 'GET_COUNTRIES_LIST', payload: response.data })
+            return response.data
             
         }
     },

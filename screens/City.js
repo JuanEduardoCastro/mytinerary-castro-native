@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { StyleSheet, Text, View, ImageBackground, FlatList, Image } from 'react-native'
 import { connect } from 'react-redux'
 import citiesActions from '../redux/actions/citiesActions'
@@ -8,6 +8,10 @@ import Itinerary from './components/Itinerary'
 
 const City = (props) => {
 
+    useLayoutEffect(() => {
+        props.navigation.setOptions({ title: props.route.params.cityName })
+    }, [])
+    
     useEffect(() => {
         async function getUniqueCity() {
             try {

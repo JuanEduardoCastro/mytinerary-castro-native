@@ -6,12 +6,13 @@ const citiesReducer = (state = {citiesListStore: [], citiesFilteredStore: [], ci
                 citiesListStore: action.payload,
             }
 
-        // case 'GET_CITIES_FILTERED':
-        //     let citiesFiltered = state.citiesListStore.filter(city => (city.cityName).toLowerCase().startsWith((action.payload.toLowerCase().trim())))
-        //     return {
-        //         ...state,
-        //         citiesFilteredStore: citiesFiltered,
-        //     }
+        case 'GET_CITIES_FILTERED':
+            let citiesFiltered = state.citiesListStore.filter(city => (city.cityName).toLowerCase().startsWith((action.payload.toLowerCase().trim())))
+            console.log("en el reducer",citiesFiltered)
+            return {
+                ...state,
+                citiesFilteredStore: citiesFiltered,
+            }
         
         case 'GET_UNIQUE_CITY':
             let uniqueCity = state.citiesListStore.find(city => (city._id === action.payload))

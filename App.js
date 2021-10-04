@@ -14,7 +14,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Provider store={myStore} >
-        <Nav />
+        {<Nav />}
       </Provider>
     </NavigationContainer>
   )

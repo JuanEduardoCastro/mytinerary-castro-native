@@ -22,7 +22,6 @@ const Home = (props) => {
     
     return (
         <View style={styles.container}>
-
             <View style={styles.containerHero}>
                 <ImageBackground source={require('../assets/hero.jpg')} style={styles.background} resizeMode='cover'>
                     <Text style={styles.text}>Find your perfect trip, designed by insiders who know and love their cities!</Text>
@@ -31,82 +30,27 @@ const Home = (props) => {
                     </TouchableOpacity>
                 </ImageBackground>
             </View>
-
             <View style={styles.containerCarousel}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>Popular Mytineraries</Text>
                 </View>
-                <Swiper style={styles.swiperTag} autoplay={false} height={'100%'} >
-                    <View style={styles.slide1}>
-                        <ImageBackground source={{ uri: citiesImg[0].img }} style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>{citiesImg[0].cityName}</Text>
-                        </ImageBackground>
-                    </View>
-                    <View style={styles.slide1}>
-                        <ImageBackground source={{ uri: citiesImg[1].img }} style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>{citiesImg[1].cityName}</Text>
-                        </ImageBackground>
-                    </View> 
-                    {/* {citiesImg.map((city, index) => {
+                <Swiper style={styles.swiperTag} height={'100%'} >
+                    {citiesImg.map((city, index) => {
+                        return (
                         <View style={styles.slide1} key={index}>
                             <ImageBackground source={{ uri: city.img }} style={styles.slideImg} resizeMode='cover'>
                                 <Text style={styles.slideText}>{city.cityName}</Text>
                             </ImageBackground>
-                        </View>
-                    })} */}
+                        </View>        
+                        )
+                    })}
                 </Swiper>
-                {/* <Swiper style={styles.swiperTag} autoplay={false} height={'90%'} >
-                    <View style={styles.slide1}>
-                        <ImageBackground source={require('../assets/cities/hong_kong_06.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>HONG KONG</Text>
-                        </ImageBackground>
-                        <ImageBackground source={require('../assets/cities/bangkok02.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>BANGKOK</Text>
-                        </ImageBackground>
-                    </View>
-                    <View style={styles.slide1}>
-                        <ImageBackground source={require('../assets/cities/macau05.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>MACAU</Text>
-                        </ImageBackground>
-                        <ImageBackground source={require('../assets/cities/singapore05.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>SINGAPORE</Text>
-                        </ImageBackground>
-                    </View>
-                    <View style={styles.slide1}>
-                        <ImageBackground source={require('../assets/cities/london01.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>LONDON</Text>
-                        </ImageBackground>
-                        <ImageBackground source={require('../assets/cities/paris01.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>PARIS</Text>
-                        </ImageBackground>
-                    </View>
-                    <View style={styles.slide1}>
-                        <ImageBackground source={require('../assets/cities/dubai04.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>DUBAI</Text>
-                        </ImageBackground>
-                        <ImageBackground source={require('../assets/cities/delhi05.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>DELHI</Text>
-                        </ImageBackground>
-                    </View>
-                    <View style={styles.slide1}>
-                        <ImageBackground source={require('../assets/cities/istambul01.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>ISTANBUL</Text>
-                        </ImageBackground>
-                        <ImageBackground source={require('../assets/cities/kualalumpur01.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>KUALALUMPUR</Text>
-                        </ImageBackground>
-                    </View>
-                    <View style={styles.slide1}>
-                        <ImageBackground source={require('../assets/cities/new_york02.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>NEW YORK</Text>
-                        </ImageBackground>
-                        <ImageBackground source={require('../assets/cities/shenzhen01.jpeg')}style={styles.slideImg} resizeMode='cover'>
-                            <Text style={styles.slideText}>SHENZHEN</Text>
-                        </ImageBackground>
-                    </View>
-                </Swiper> */}
             </View>
-    </View>
+            <View style={styles.footer}>
+                <Text style={styles.fotterText}>© Mytinerary || Juan Eduardo Castro Trujillo</Text>
+            
+            </View>
+        </View>
     )
 }
 
@@ -122,7 +66,7 @@ const styles = StyleSheet.create({
 
     // hero
     containerHero: {
-        flex: 2,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -134,16 +78,15 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 24,
-        paddingHorizontal: 24,
-        marginBottom: 60,
+        marginBottom: 8,
         textAlign: 'center',
     },
     button: {
         backgroundColor: '#956bff',
         paddingHorizontal: 30,
-        paddingVertical: 12,    
+        paddingVertical: 10,    
         borderRadius: 5,
-        marginTop: 40,
+        marginTop: 10,
     },
     buttonText: {
         fontSize: 24,
@@ -167,9 +110,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    swiperTag: {
-        backgroundColor: 'red',
-    },  
     slide1: {
         width: '100%',
         height: '100%',
@@ -184,5 +124,18 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 30,
         fontWeight: 'bold',
+        padding: 10,
     },
+
+    footer: {
+        width: '100%',
+        height: '7%',
+        backgroundColor: '#956bff',
+        alignItems: 'center',
+        paddingTop: 5,
+    },
+    footerText: {
+        fontSize: 10,
+
+    }
 })
