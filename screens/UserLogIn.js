@@ -1,9 +1,54 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import usersActions from '../redux/actions/usersActions'
+import { connect } from 'react-redux'
 
-const UserLogIn = () => {
-    const [inputFilter, setInputFilter] = useState('')
+
+const UserLogIn = (props) => {
+
     const [loginData, setLoginData] = useState({ userEmail: '', userPassword: '' })    
+
+    const storeData = async () => {
+        try {
+          await AsyncStorage.setItem('token', props.token)
+          await AsyncStorage.setItem('userName', props.userName)
+          await AsyncStorage.setItem('userPhoto', props.userPhoto)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    
+      const getData = async () => {
+        try {
+          const value = await AsyncStorage.getItem('token')
+          const userName = await AsyncStorage.getItem('userName')
+          const userPhoto = await AsyncStorage.getItem('userPhoto')
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      const removeValue = async () => {
+          try {
+              await AsyncStorage.removeItem('token')
+          } catch (error) {
+              console.log(error)
+          }
+      }
+
+      const sendUserDataHandler = async () => {
+        let response = await props.logInUser(loginData)
+        if (response.data.success) {
+            storeData()
+            console.log("esta adentro", response )
+            props.navigation.navigate('home', { user: props })
+        } else {
+            console.log(response.data.error)
+        }
+      }
+
+
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -14,12 +59,14 @@ const UserLogIn = () => {
                     <TextInput 
                         style={styles.emailInput}
                         onChange={(e) => setLoginData({ ...loginData, userEmail: e.nativeEvent.text})}
-                        placeholder="* Enter your email" />
+                        placeholder="* Enter your email" 
+                        keyboardType='email-address' />
                     <TextInput 
                         style={styles.emailInput}
                         onChange={(e) => setLoginData({ ...loginData, userPassword: e.nativeEvent.text})}
-                        placeholder="* Enter your password" />
-                    <TouchableOpacity style={styles.button} onPress={() => Alert.alert("manda los datos del usuario")}>
+                        placeholder="* Enter your password" 
+                        secureTextEntry={true} />
+                    <TouchableOpacity style={styles.button} onPress={sendUserDataHandler}>
                         <Text style={styles.buttonText}>Send</Text>
                     </TouchableOpacity>
                     <View style={styles.loginLine}>
@@ -27,7 +74,7 @@ const UserLogIn = () => {
                     </View>
                     <View style={styles.viewForLogIn}>
                         <Text style={styles.textForLogIn}>please click here to</Text>
-                        <TouchableOpacity style={styles.login} onPress={() => Alert.alert("me lleva a signup")}>
+                        <TouchableOpacity style={styles.login} onPress={() => props.navigation.navigate('signup')}>
                             <Text style={styles.loginText}>Sign Up!!</Text>
                         </TouchableOpacity>
                     </View>
@@ -37,7 +84,18 @@ const UserLogIn = () => {
     )
 }
 
-export default UserLogIn
+const mapStateToProps = (state) => {
+    return {
+        token: state.users.token,
+        userName: state.users.userNameStore,
+        userPhot: state.users.userPhotoStore
+    }
+}
+
+const mapDispatchToProps = {
+    logInUser: usersActions.logInUser
+}
+export default connect(mapStateToProps, mapDispatchToProps)(UserLogIn)
 
 const styles = StyleSheet.create({
     container: {

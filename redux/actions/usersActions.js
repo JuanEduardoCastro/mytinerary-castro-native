@@ -28,9 +28,16 @@ const usersActions = {
         }
     },
 
-    // logInLocalStorage: (token) => {
-    //     return 
-    // },
+    logInLocalStorage: (token) => {
+        return async (dispatch) => {
+            try {
+                let response = await axios.get("https://mytinerary-castro.herokuapp.com/api/verifyToken", { headers: { Authorization: "Bearer " + token }})
+                dispatch({type: 'LOG_IN_USER', payload: { token, userName: response.data.userName, userPhoto: response.data.userPhoto, userEmail: response.data.userEmail }})
+            } catch (error) {
+                return dispatch({ type: "LOG_OUT_USER" })
+            }    
+        }
+    },
 
     getCountriesList: () => {
         return async (dispatch) => {

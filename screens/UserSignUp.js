@@ -21,11 +21,22 @@ const UserSignUp = (props) => {
         getCountries() 
     }, [])
 
+    const storeData = async () => {
+        try {
+          await AsyncStorage.setItem('token', props.token)
+          await AsyncStorage.setItem('userName', props.userName)
+          await AsyncStorage.setItem('userPhoto', props.userPhoto)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
     const sendUserData = async () => {
         if (Object.entries(userData).length > 0) {
             let response = await props.addNewUser(userData)
             if (response.data.success) {
                 // console.log("esta adentro", response )
+                storeData()
                 props.navigation.navigate('home', { user: props})
             } else {
                 console.log(response.data.error)
@@ -34,6 +45,7 @@ const UserSignUp = (props) => {
             console.log("All fields are required")
         }
     }
+
 
     // let countriesList = props.countryList.map(country => country.name.common)
     // countriesList = countriesList.sort()

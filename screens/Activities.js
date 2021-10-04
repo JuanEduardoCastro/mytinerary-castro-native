@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, ImageBackground, Image, FlatList, TextInput } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, Image, FlatList, TextInput, Alert, Keyboard } from 'react-native'
 import activitiesActions from '../redux/actions/activitiesActions'
 import itinerariesActions from '../redux/actions/itinerariesActions'
 import Swiper from 'react-native-swiper'
@@ -77,9 +77,10 @@ const Activities = (props) => {
                         <View style={styles.commentBox}>
                             <TextInput 
                                 style={styles.textInput}
-                                onFocus={(event) => console.log(event)}
+                                onFocus={() => Alert.alert('You must be logged in to post a comment')}
                                 onChangeText={inputFilterHandler}
-                                placeholder="Your comment here" />
+                                placeholder="Your comment here" 
+                                KeyboardType={null} />
                         </View>                        
                     </View>
                 </KeyboardAwareScrollView>
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     textInput: {
-        fontSize: 24,
+        fontSize: 20,
         paddingHorizontal: 12,
         paddingVertical: 8,
 

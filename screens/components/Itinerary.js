@@ -4,7 +4,6 @@ import { Image, TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-na
 
 const Itinerary = (props) => {
 
-
     let price = []
     for (let i = 0; i < props.itinerary.item.price; i++) {
         price.push(<FontAwesome5 name='money-bill-alt' key={i} size={24} color='green' style={styles.moneyIcon}/>)
@@ -23,7 +22,7 @@ const Itinerary = (props) => {
                         <Text style={styles.authorName}>{props.itinerary.item.authorName}</Text>
                     </View>
                     <View style={styles.likes}>
-                        <TouchableOpacity style={styles.like} onPress={() => Alert.alert("like")} >
+                        <TouchableOpacity style={styles.like} onPress={() => Alert.alert("You must be logged in to like a itinerary")} >
                             <AntDesign name='hearto' size={26} color='black' />
                         </TouchableOpacity>
                         <Text style={styles.likesNumber}>{props.itinerary.item.likes}</Text>

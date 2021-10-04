@@ -14,11 +14,18 @@ const Nav = (props) => {
     return (
         <Drawer.Navigator>
             <Drawer.Screen name='home' component={MainNavStack} options={{ 
-                headerShown: false
+                headerShown: false,
+                title: 'Home'
             }}/>
-            {!props.token && <Drawer.Screen name='signup' component={UserSignUp} />}
-            {!props.token && <Drawer.Screen name='login' component={UserLogIn} />}
-            {props.token && <Drawer.Screen name='logOut' component={UserLogOut}  />}
+            {!props.token && <Drawer.Screen name='signup' component={UserSignUp} options={{ 
+                title: 'Sign Up'
+            }}/>}
+            {!props.token && <Drawer.Screen name='login' component={UserLogIn} options={{ 
+                title: 'Log In'
+            }}/>}
+            {props.token && <Drawer.Screen name='logOut' component={UserLogOut}  options={{
+                title: 'Log Out'
+            }}/>}
 
         </Drawer.Navigator>
     )

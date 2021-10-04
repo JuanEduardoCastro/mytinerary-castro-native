@@ -31,7 +31,7 @@ const Nav = () => {
             }}/>
             <Stack.Screen name='city' component={City} options={({ route }) => ({ title: route.params.name })}/>
             <Stack.Screen name='activities' component={Activities} option={{
-                title: 'Activities'
+                title: 'Activities',
             }}/>            
         </Stack.Navigator>
     )
